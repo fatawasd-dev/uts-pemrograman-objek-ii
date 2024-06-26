@@ -7,6 +7,9 @@ package uts.laundry.fahmi;
 import java.awt.Image;
 import javazoom.jl.player.Player;
 import java.io.FileInputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.ListModel;
@@ -127,6 +130,7 @@ public class Home extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -211,6 +215,13 @@ public class Home extends javax.swing.JFrame {
 
         jLabel13.setText("0");
 
+        jButton3.setText("Save");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -270,7 +281,10 @@ public class Home extends javax.swing.JFrame {
                                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jLabel9))
-                                .addComponent(jLabel13)))))
+                                .addComponent(jLabel13)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jButton3)
+                            .addGap(22, 22, 22))))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -316,7 +330,9 @@ public class Home extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13))
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         pack();
@@ -388,6 +404,26 @@ public class Home extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jTextField4KeyTyped
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            String sql = "INSERT INTO pelanggan (tgl_laundry, tgl_selesai, nama, no_telp, paket, harga, berat, subtotal) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            Connection conn = Koneksi.getConnection();
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setDate(1, new java.sql.Date(jDateChooser1.getDate().getTime()));
+            pst.setDate(2, new java.sql.Date(jDateChooser2.getDate().getTime()));
+            pst.setString(3, jTextField1.getText());
+            pst.setString(4, jTextField2.getText());
+            pst.setString(5, jList2.getSelectedValue());
+            pst.setInt(6, Integer.parseInt(jLabel8.getText()));
+            pst.setInt(7, Integer.parseInt(jTextField4.getText()));
+            pst.setInt(8, Integer.parseInt(jLabel13.getText()));
+            pst.executeUpdate();
+            javax.swing.JOptionPane.showMessageDialog(null, "Data berhasil disimpan");
+        } catch (SQLException ex) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Data gagal disimpan: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     
     /**
      * @param args the command line arguments
@@ -443,6 +479,7 @@ public class Home extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
